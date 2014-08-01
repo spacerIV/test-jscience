@@ -2,8 +2,12 @@
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.Random;
+import java.util.Set;
+import java.util.Arrays;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Mass;
+import javax.measure.MeasureFormat;
 import javax.measure.quantity.*;
 import javax.measure.unit.*;
 
@@ -46,31 +50,7 @@ import static javax.measure.unit.SI.*;
 
 import static org.jscience.economics.money.Currency.*;
 
-
-/**
-import javax.measure.Measure;
-import javax.measure.quantity.*;
-import javax.measure.quantity.Angle;
-import javax.measure.quantity.Length;
-import javax.measure.quantity.Quantity;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-
-import javax.measure.quantity.*;
-import javax.measure.unit.*;
-
-import static javax.measure.unit.NonSI.*;
-import static javax.measure.unit.SI.*;
-
-import org.jscience.physics.amount.Amount;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-**/
-
-public class Test
+public class Test implements javax.measure.quantity.Length
 {
     public static void main(String[] args)
     {
@@ -78,11 +58,119 @@ public class Test
 
         //test.simple_convert();
         
-        //test.getNonSIUnits();
+        test.getSIUnits();
+
+        test.getNonSIUnits();
+
+        //test.test_meter();
+
+        //test.test_volume();
 
         //test.getExact();
 
-        test.test_all();
+        //test.test_all();
+        
+        // test.more();
+
+        //test.getConverter();
+
+        //test.test_length();
+        
+        test.test_length2();
+
+        //test.test_format();
+
+        //test.test_conversions();
+    }
+
+    public void test_conversions()
+    {
+        System.out.println( "" );
+        System.out.println("Test Conversions");       
+
+        Unit<Length> FURLONG = NonSI.FOOT.times(660);
+        Unit<Length> MICRON = SI.MICRO(NonSI.INCH);
+
+        //Derive the converter from the Unit
+        System.out.println("Converter");       
+        System.out.println(FURLONG.getConverterTo(SI.METER).convert(1));
+
+        //Build a Scalar and have it calculate
+        //System.out.println("Scalar");       
+        //Quantity<Length> furlongScalar = new Scalar<Length>(1, FURLONG); // Ok.
+        //final Unit<Length> mm = SI.MILLI(SI.METER);
+        //System.out.println(furlongScalar.doubleValue(SI.METER));
+
+        //Build a Measure and have it calculate
+        System.out.println("Measure");       
+        Measure lengthInFurlong = Measure.valueOf(1, FURLONG);
+        System.out.println(lengthInFurlong.doubleValue(SI.METER));
+
+        System.out.println(Measure.valueOf(1, FURLONG).doubleValue(SI.METER));
+    }
+
+    public void test_volume()
+    {
+        Amount<Volume> v1 = Amount.valueOf(20, 20, LITRE);
+        Amount<Volume> v2 = Amount.valueOf(20, LITRE).to( MILLI( LITER ) );
+
+        System.out.println( v1 );
+        System.out.println( v2 );
+    }
+
+    public void test_meter()
+    {
+        System.out.println( "" );
+        System.out.println("Test Meter");       
+
+        //Amount<Length> mm = Amount.valueOf(1, METER).to( MILLI( METER ) );
+        //Amount<Length> cm = Amount.valueOf(1, METER).to( CENTI( METER ) );
+        //Amount<Length> pm = Amount.valueOf(1, METER).to( PICO( METER ) );
+        //Amount<Length> yocto = Amount.valueOf( 1, METER).to( YOCTO( METER ) );
+
+        Amount<Length> yotta = Amount.valueOf( 1, KILOMETER).to( YOTTA( METER ) );
+        Amount<Length> zetta = Amount.valueOf( 1, KILOMETER).to( ZETTA( METER ) );
+        Amount<Length> exa = Amount.valueOf( 1, KILOMETER).to( EXA( METER ) );
+        Amount<Length> peta = Amount.valueOf( 1, KILOMETER).to( PETA( METER ) );
+        Amount<Length> tera = Amount.valueOf( 1, KILOMETER).to( TERA( METER ) );
+        Amount<Length> giga = Amount.valueOf( 1, KILOMETER).to( GIGA( METER ) );
+        Amount<Length> mega = Amount.valueOf( 1, KILOMETER).to( MEGA( METER ) );
+        Amount<Length> kilo = Amount.valueOf( 1, KILOMETER).to( KILO( METER ) );
+        Amount<Length> hecto = Amount.valueOf( 1, KILOMETER).to( HECTO( METER ) );
+        Amount<Length> deka = Amount.valueOf( 1, KILOMETER).to( DEKA( METER ) );
+        Amount<Length> deci = Amount.valueOf( 1, KILOMETER).to( DECI( METER ) );
+        Amount<Length> centi = Amount.valueOf( 1, KILOMETER).to( CENTI( METER ) );
+        Amount<Length> milli = Amount.valueOf( 1, KILOMETER).to( MILLI( METER ) );
+        Amount<Length> micro = Amount.valueOf( 1, KILOMETER).to( MICRO( METER ) );
+        Amount<Length> nano = Amount.valueOf( 1, KILOMETER).to( NANO( METER ) );
+        Amount<Length> pico = Amount.valueOf( 1, KILOMETER).to( PICO( METER ) );
+        Amount<Length> femto = Amount.valueOf( 1, KILOMETER).to( FEMTO( METER ) );
+        Amount<Length> atto = Amount.valueOf( 1, KILOMETER).to( ATTO( METER ) );
+        Amount<Length> zepto = Amount.valueOf( 1, KILOMETER).to( ZEPTO( METER ) );
+        Amount<Length> yocto = Amount.valueOf( 1, KILOMETER).to( YOCTO( METER ) );
+
+        
+        System.out.println("1 km = " + yotta );
+        System.out.println("1 km = " + zetta );
+        System.out.println("1 km = " + exa );
+        System.out.println("1 km = " + peta );
+        System.out.println("1 km = " + tera );
+        System.out.println("1 km = " + giga );
+        System.out.println("1 km = " + mega );
+          System.out.println("---1 km = " + kilo );
+          System.out.println("---1 km = " + hecto );
+          System.out.println("---1 km = " + deka );
+          System.out.println("---1 km = " + deci );
+          System.out.println("---1 km = " + centi );
+          System.out.println("---1 km = " + milli );
+          System.out.println("---1 km = " + micro );
+          System.out.println("---1 km = " + nano );
+        System.out.println("1 km = " + pico );
+        System.out.println("1 km = " + femto );
+        System.out.println("1 km = " + atto );
+        System.out.println("1 km = " + zepto );
+        System.out.println("1 km = " + yocto ); 
+
     }
 
     public void getExact()
@@ -97,9 +185,24 @@ public class Test
         System.out.println("m2 = " + m2);
     }
 
+    public void getSIUnits() 
+    {
+        SI si = SI.getInstance();
+        Set<Unit<?>> set_si_units = si.getUnits();
+
+        System.out.println( "" );
+        System.out.println( "SI units" );
+        System.out.println( Arrays.toString( set_si_units.toArray() ) );
+    }
+
     public void getNonSIUnits() 
     {
-        //Set<Unit<?>> nonsi = SI.getUnits;
+        NonSI nonSI = NonSI.getInstance();
+        Set<Unit<?>> set_nonsi_units = nonSI.getUnits();
+
+        System.out.println( "" );
+        System.out.println( "NonSI units" );
+        System.out.println( Arrays.toString( set_nonsi_units.toArray() ) );
     }
 
     public void simple_convert() 
@@ -378,4 +481,154 @@ public class Test
 
         }
     }
+
+    public void more() 
+    {
+        System.out.println( "" );
+        System.out.println( "More" );
+        //Generate Units with scalar multiplication
+        Unit<Length> FURLONG = NonSI.FOOT; // Ok
+        System.out.println( FURLONG );
+        FURLONG = NonSI.FOOT.times(2); // Ok
+        System.out.println( FURLONG );
+        // Unit<Length> FURLONG = SI.HOUR.times(60); // Compile error
+        //Generate Units with prefixes
+        Unit<Length> GIGAMETER = SI.GIGA(SI.METER); // Ok
+        // Unit<Length> GIGAMETER = SI.GIGA(SI.NEWTON); // Compile error
+        // Retrieval of the system unit (meter in this case)
+        //System.out.println( NonSI.FOOT.getSystemUnit() );
+        //System.out.println( NonSI.FOOT.getUnit() );
+        // Retrieval of the unit dimension (L represents length)
+        System.out.println(GIGAMETER.getDimension());
+        // Dimension checking (allows/disallows conversions)
+        System.out.println(NonSI.LIGHT_YEAR.isCompatible(NonSI.PARSEC)); //legal
+        System.out.println(NonSI.LIGHT_YEAR.isCompatible(SI.WATT)); //illegal
+        System.out.println(NonSI.LIGHT_YEAR.isCompatible(NonSI.PARSEC.divide(SI.SECOND))); //illegal
+    }
+
+    public void getConverter() 
+    {
+        System.out.println( "" );
+        System.out.println( "getConverter" );
+
+        Unit<Length> FURLONG = NonSI.FOOT.times(660);
+        Unit<Length> MICROINCH = SI.MICRO(NonSI.INCH);
+        System.out.println("FURLONG to MICROINCH: " + FURLONG.getConverterTo(MICROINCH).convert(1));
+        System.out.println("FURLONG to METER:" +  SI.METER.getConverterTo(FURLONG).convert(1));
+
+        System.out.println("MILE to METER: " + NonSI.MILE.getConverterTo(SI.METER).convert(1));
+
+        System.out.println("MILE to KILOMETER: " + NonSI.MILE.getConverterTo(KILOMETER).convert(1));
+    }
+
+    public void test_format()
+    {
+
+        System.out.println("");
+        System.out.println("Amount Format");
+        Unit<Length> LEAGUE  = SI.KILOMETER.times(5.55600);
+        Amount<Length> m = Amount.valueOf(1, METER).to( NonSI.LIGHT_YEAR ); 
+        Amount<Mass> p = Amount.valueOf(100.0, POUND);
+        //Measure<Double, Length> l = Measure.valueOf(100.0, SI.METER).to( NonSI.ANGSTROM );
+
+        System.out.println("AmountFormat - Plus/Minus Error (3 digits error)");
+        AmountFormat.setInstance(AmountFormat.getPlusMinusErrorInstance(3));
+        //MeasureFormat.setInstance(MeasureFormat.getPlusMinusErrorInstance(3));
+        //System.out.println( "meter to angstrom : " + l );
+        //System.out.println( "meter to foot : "         + SI.METER.getConverterTo(  NonSI.FOOT ).convert( 1 ) );
+        //System.out.println( "meter to league : "       + SI.METER.getConverterTo(  LEAGUE ).convert( 1 ) );
+        System.out.println( "meter to lightyear : "       + m );
+        System.out.println( "pound : "       + p );
+
+        System.out.println("");
+        System.out.println("AmountFormat - Bracket Error (2 digits error)");
+        AmountFormat.setInstance(AmountFormat.getBracketErrorInstance(2));
+        //MeasureFormat.setInstance(MeasureFormat.getPlusMinusErrorInstance(3));
+        //System.out.println( "meter to angstrom : " + l );
+        //System.out.println( "meter to foot : "         + SI.METER.getConverterTo(  NonSI.FOOT ).convert( 1 ) );
+        //System.out.println( "meter to league : "       + SI.METER.getConverterTo(  LEAGUE ).convert( 1 ) );
+        System.out.println( "meter to lightyear : "       + m );
+        System.out.println( "pound : "       + p );
+
+        System.out.println("");
+        System.out.println("AmountFormat - Exact Digits Only");
+        AmountFormat.setInstance(AmountFormat.getExactDigitsInstance());
+        //MeasureFormat.setInstance(MeasureFormat.getPlusMinusErrorInstance(3));
+        //System.out.println( "meter to angstrom : " + l );
+        //System.out.println( "meter to foot : "         + SI.METER.getConverterTo(  NonSI.FOOT ).convert( 1 ) );
+        //System.out.println( "meter to league : "       + SI.METER.getConverterTo(  LEAGUE ).convert( 1 ) );
+        System.out.println( "meter to lightyear : "       + m );
+        System.out.println( "pound : "       + p );
+    }
+
+    public void test_length() 
+    {
+        System.out.println( "" );
+        System.out.println( "test length" );
+
+        AmountFormat.setInstance(AmountFormat.getExactDigitsInstance());
+        Unit<Length> FURLONG = NonSI.FOOT.times(660);
+        Unit<Length> LEAGUE  = SI.KILOMETER.times(5.55600);
+
+        System.out.println( "meter to angstrom : "     + SI.METER.getConverterTo(  NonSI.ANGSTROM ).convert( 1 ) );
+        System.out.println( "meter to astronomical : " + SI.METER.getConverterTo(  NonSI.ASTRONOMICAL_UNIT ).convert( 1 ) );
+        System.out.println( "meter to centimeter : "   + SI.METER.getConverterTo(  SI.CENTIMETER ).convert( 1 ) );
+        //System.out.println( "meter to chain : "      + SI.METER.getConverterTo(  NonSI.CHAIN ).convert( 1 ) );
+        //System.out.println( "meter to decimeter : "    + SI.METER.getConverterTo(  SI.DECIMETER ).convert( 1 ) );
+        //System.out.println( "meter to fathom : "       + SI.METER.getConverterTo(  NonSI.FATHOM ).convert( 1 ) );
+        System.out.println( "meter to foot : "         + SI.METER.getConverterTo(  NonSI.FOOT ).convert( 1 ) );
+        System.out.println( "meter to furlong : "      + SI.METER.getConverterTo(  FURLONG ).convert( 1 ) );
+        System.out.println( "meter to inch : "         + SI.METER.getConverterTo(  NonSI.INCH ).convert( 1 ) );
+        System.out.println( "meter to kilometer : "    + SI.METER.getConverterTo(  SI.KILOMETER ).convert( 1 ) );
+        System.out.println( "meter to league : "       + SI.METER.getConverterTo(  LEAGUE ).convert( 1 ) );
+        System.out.println( "meter to light : "        + SI.METER.getConverterTo(  NonSI.LIGHT_YEAR ).convert( 1 ) );
+        System.out.println( "meter to meter : "        + SI.METER.getConverterTo(  SI.METER ).convert( 1 ) );
+        System.out.println( "meter to mile : "         + SI.METER.getConverterTo(  NonSI.MILE ).convert( 1 ) );
+        System.out.println( "meter to millimeter : "   + SI.METER.getConverterTo(  SI.MILLIMETER ).convert( 1 ) );
+        //System.out.println( "meter to micrometer : "   + SI.METER.getConverterTo(  SI.MICROMETER ).convert( 1 ) );
+        //System.out.println( "meter to micron : "       + SI.METER.getConverterTo(  SI.MICRON ).convert( 1 ) );
+        //System.out.println( "meter to nanometer : "    + SI.METER.getConverterTo(  SI.NANOMETER ).convert( 1 ) );
+        System.out.println( "meter to nautical_mile: "     + SI.METER.getConverterTo(  NonSI.NAUTICAL_MILE ).convert( 1 ) );
+        System.out.println( "meter to parsec : "       + SI.METER.getConverterTo(  NonSI.PARSEC ).convert( 1 ) );
+        //System.out.println( "meter to rod : "          + SI.METER.getConverterTo(  NonSI.ROD ).convert( 1 ) );
+        System.out.println( "meter to yard : "         + SI.METER.getConverterTo(  NonSI.YARD ).convert( 1 ) );
+
+        //String str = new String("DEGREE_ANGLE");
+        //UnitFormat u = u.getInstance();
+        //System.out.println( " label: " + u.nameFor( SI.GRAM ) );
+    }
+
+    public void test_length2() 
+    {
+        System.out.println( "" );
+        System.out.println( "test length2" );
+
+        AmountFormat.setInstance(AmountFormat.getExactDigitsInstance());
+        Unit<Length> FURLONG = NonSI.FOOT.times(660);
+        Unit<Length> LEAGUE  = SI.KILOMETER.times(5.55600);
+        
+        System.out.println( "Meters in ANGSTROM:" + ( Measure.valueOf( 1, NonSI.ANGSTROM ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in ASTRONOMICAL_UNIT: " + ( Measure.valueOf( 1, NonSI.ASTRONOMICAL_UNIT ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in " + ( Measure.valueOf( 1, SI.CENTIMETER ).doubleValue( SI.METER) ) );
+        //System.out.println( "Meters in " + ( Measure.valueOf( 1, NonSI.CHAIN ).doubleValue( SI.METER) ) );
+        //System.out.println( "Meters in " + ( Measure.valueOf( 1, SI.DECIMETER ).doubleValue( SI.METER) ) );
+        //System.out.println( "Meters in " + ( Measure.valueOf( 1, NonSI.FATHOM ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in FOOT: " + ( Measure.valueOf( 1, NonSI.FOOT ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in FURLONG: " + ( Measure.valueOf( 1, FURLONG ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in INCH: " + ( Measure.valueOf( 1, NonSI.INCH ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in KILOMETER: " + ( Measure.valueOf( 1, SI.KILOMETER ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in LEAGUE: " + ( Measure.valueOf( 1, LEAGUE ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in LIGHT_YEAR: " + ( Measure.valueOf( 1, NonSI.LIGHT_YEAR ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in METER: " + ( Measure.valueOf( 1, SI.METER ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in MILE: " + ( Measure.valueOf( 1, NonSI.MILE ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in MILLIMETER: " + ( Measure.valueOf( 1, SI.MILLIMETER ).doubleValue( SI.METER) ) );
+        //System.out.println( "Meters in " + ( Measure.valueOf( 1, SI.MICROMETER ).doubleValue( SI.METER) ) );
+        //System.out.println( "Meters in " + ( Measure.valueOf( 1, SI.MICRON ).doubleValue( SI.METER) ) );
+        //System.out.println( "Meters in " + ( Measure.valueOf( 1, SI.NANOMETER ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in NAUTICAL_MILE: " + ( Measure.valueOf( 1, NonSI.NAUTICAL_MILE ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in PARSEC: " + ( Measure.valueOf( 1, NonSI.PARSEC ).doubleValue( SI.METER) ) );
+        //System.out.println( "Meters in " + ( Measure.valueOf( 1, NonSI.ROD ).doubleValue( SI.METER) ) );
+        System.out.println( "Meters in YARD: " + ( Measure.valueOf( 1, NonSI.YARD ).doubleValue( SI.METER) ) );
+    }
+
 }

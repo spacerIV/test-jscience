@@ -1,0 +1,8 @@
+SI units
+--------
+[m/s², lm, F, A, C, N, H, J, lx, K, m/s, Wb, m³, Gy, T, W, kg, V, Ω, S, kat, Pa, sr, m, m², mol, bit, Hz, s, ℃, Bq, Sv, rad, cd]
+
+NonSI units
+-----------
+[m/s², lm, F, A, C, N, H, J, lx, K, m/s, Wb, m³, Gy, T, W, kg, V, Ω, S, kat, Pa, sr, m, m², mol, bit, Hz, s, ℃, Bq, Sv, rad, cd]
+[mph, Gi, kn, Fr, u, ly, atom, °R, ', day, G, month, erg, ha, Fd, cm²/s, ft, day_sidereal, gallon_uk, kgf, oz_uk, gal, yd, oz, min, atm, lbf, Å, ", g/(cm·s), h, km/h, rem, %, bar, mmHg, rev, rd, Mach, Rd, c, in, ua, hp, lb, Ci, ton_us, byte, sphere, mi, t, pc, dyn, year_sidereal, year, Roentgen, a, °F, gallon_dry_us, year_calendar, L, in³, ton_uk, e, eV, nmi, pixel, centiradian, °, dB, grav, foot_survey_us, me, inHg, grade, oz, La, week, pt, Mx]
