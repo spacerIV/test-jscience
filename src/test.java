@@ -1,11 +1,30 @@
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+import au.com.bytecode.opencsv.CSVReadProc;
+
+import au.com.bytecode.opencsv.CSV;
+
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileNotFoundException; 
+import java.io.Writer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import java.math.BigInteger;
+import java.lang.Double;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Mass;
@@ -54,15 +73,16 @@ import static org.jscience.economics.money.Currency.*;
 
 public class Test implements javax.measure.quantity.Length
 {
-    public static void main(String[] args)
+
+    public static void main(String[] args) throws IOException
     {
         Test test = new Test();
 
         //test.simple_convert();
         
-        test.getSIUnits();
+        //test.getSIUnits();
 
-        test.getNonSIUnits();
+        //test.getNonSIUnits();
 
         //test.test_meter();
 
@@ -76,19 +96,23 @@ public class Test implements javax.measure.quantity.Length
 
         //test.getConverter();
 
-        test.test_length();
+        //test.test_length();
         
-        test.test_length2();
+        //test.test_length2();
 
-        test.test_length3();
+        //test.test_length3();
 
-        test.test_format();
+        //test.test_format();
 
         //test.test_conversions();
         
-        test.test_acceleration();
+        //test.test_acceleration();
 
-        test.test_hashmap();
+        //test.test_hashmap();
+
+        test.test_csv();
+
+        //test.test_csv2();
     }
 
     public void test_conversions()
@@ -738,4 +762,103 @@ public class Test implements javax.measure.quantity.Length
         //System.out.println( symbols.get("METERS_PER_SQUARE_SECOND") );
     }
 
+    public void test_csv() throws IOException
+    {
+        System.out.println("");
+        System.out.println("test csv");
+
+        CSVReader reader = null;
+        String ADDRESS_FILE = "//Users/victor/Documents/github/test-jscience/res/acceleration.csv";
+
+        try 
+        {
+            reader = new CSVReader(new FileReader(ADDRESS_FILE));
+        }
+        catch(  FileNotFoundException ex ) 
+        { 
+            System.out.println( "File not found exception, unfortunately" ); 
+            throw(ex);
+        } 
+
+        TreeMap<String, String> unitSymbols             = new TreeMap<String, String>();
+        TreeMap<String, String> unitNiceNames           = new TreeMap<String, String>();
+        TreeMap<String, String> unitConversionUnit      = new TreeMap<String, String>();
+        TreeMap<String, Double> unitTimes               = new TreeMap<String, Double>();
+        TreeMap<String, Unit<Acceleration>> unitObjects = new TreeMap<String, Unit<Acceleration>>();
+
+        String [] nextLine;
+        while ((nextLine = reader.readNext()) != null) 
+        {
+            if ( nextLine[0].equals("name") && nextLine[1].equals("symbol") ) 
+            {
+                continue;
+            }
+
+            System.out.println("nicename: " + nextLine[2] );
+
+            unitSymbols.put( nextLine[0], nextLine[1] );
+            unitNiceNames.put( nextLine[0], nextLine[2] );
+            unitConversionUnit.put( nextLine[0], nextLine[3] );
+            unitTimes.put( nextLine[0], Double.parseDouble( nextLine[4] ) );
+        }
+
+        Unit<Acceleration> STANDARD_CONVERSION = SI.METERS_PER_SQUARE_SECOND;
+
+        for ( String key : unitNiceNames.keySet() ) 
+        {
+            Unit<Acceleration> newObj = null; 
+            if ( unitTimes.get( key ).equals( 1.0 ) ) 
+            {
+                newObj = STANDARD_CONVERSION;
+            }
+            else
+            {
+                newObj = STANDARD_CONVERSION.times( unitTimes.get(key) );
+            }
+
+            unitObjects.put( key, newObj );
+        }
+
+        System.out.println( "Done setup, now test: inch/sec\u00B2\u00B5\u2080 " );
+
+        for ( String key : unitNiceNames.keySet() ) 
+        {
+            //System.out.println("1 INCH_PER_SQUARE_SECOND to METERS_PER_SQUARE_SECOND: "      + INCH_PER_SQUARE_SECOND.getConverterTo(METERS_PER_SQUARE_SECOND).convert(1) );
+            Double d = unitObjects.get("CENTIMETERS_PER_SQUARE_SECOND").getConverterTo( unitObjects.get( key )).convert(1);  
+            System.out.println( "1 " + unitNiceNames.get("CENTIMETERS_PER_SQUARE_SECOND") + " = " + d + " " + unitSymbols.get(key) );
+
+        }
+    }
+
+    public void test_csv2() throws IOException
+    {
+        System.out.println("");
+        System.out.println("test csv2");
+
+        CSV csv = CSV.separator(',')
+                     .quote('"')
+                     .skipLines(1)
+                     //.charset("UTF-8")
+                     .create();
+
+        String ADDRESS_FILE = "//Users/victor/Documents/github/test-jscience/res/acceleration.csv";
+
+        TreeMap<String, String> unitSymbols             = new TreeMap<String, String>();
+        TreeMap<String, String> unitNiceNames           = new TreeMap<String, String>();
+        TreeMap<String, String> unitConversionUnit      = new TreeMap<String, String>();
+        TreeMap<String, Double> unitTimes               = new TreeMap<String, Double>();
+        TreeMap<String, Unit<Acceleration>> unitObjects = new TreeMap<String, Unit<Acceleration>>();
+
+        csv.read(ADDRESS_FILE, new CSVReadProc() {
+            public void procRow(int rowIndex, String... values) {
+                if ( rowIndex == 1 )
+                {
+                    return;
+                }
+                System.out.println(rowIndex + ": " + Arrays.asList(values));
+                System.out.println( values[0] );
+                System.out.println( values[1] );
+            }
+        });
+    }
 }
