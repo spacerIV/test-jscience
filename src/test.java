@@ -80,9 +80,9 @@ public class Test implements javax.measure.quantity.Length
 
         //test.simple_convert();
         
-        //test.getSIUnits();
+        test.getSIUnits();
 
-        //test.getNonSIUnits();
+        test.getNonSIUnits();
 
         //test.test_meter();
 
@@ -110,9 +110,9 @@ public class Test implements javax.measure.quantity.Length
 
         //test.test_hashmap();
 
-        test.test_csv();
+        //test.test_csv();
 
-        //test.test_csv2();
+        test.test_astronomical();
     }
 
     public void test_conversions()
@@ -830,35 +830,13 @@ public class Test implements javax.measure.quantity.Length
         }
     }
 
-    public void test_csv2() throws IOException
+    public void test_astronomical() 
     {
         System.out.println("");
-        System.out.println("test csv2");
+        System.out.println("test astro");
 
-        CSV csv = CSV.separator(',')
-                     .quote('"')
-                     .skipLines(1)
-                     //.charset("UTF-8")
-                     .create();
+        System.out.println("1 MILE to 1 PARSEC: "            + NonSI.MILE.getConverterTo(NonSI.PARSEC).convert(1) );
+        System.out.println("1 MILE to 1 ASTRONOMICAL_UNIT: " + NonSI.MILE.getConverterTo(NonSI.ASTRONOMICAL_UNIT).convert(1) );
 
-        String ADDRESS_FILE = "//Users/victor/Documents/github/test-jscience/res/acceleration.csv";
-
-        TreeMap<String, String> unitSymbols             = new TreeMap<String, String>();
-        TreeMap<String, String> unitNiceNames           = new TreeMap<String, String>();
-        TreeMap<String, String> unitConversionUnit      = new TreeMap<String, String>();
-        TreeMap<String, Double> unitTimes               = new TreeMap<String, Double>();
-        TreeMap<String, Unit<Acceleration>> unitObjects = new TreeMap<String, Unit<Acceleration>>();
-
-        csv.read(ADDRESS_FILE, new CSVReadProc() {
-            public void procRow(int rowIndex, String... values) {
-                if ( rowIndex == 1 )
-                {
-                    return;
-                }
-                System.out.println(rowIndex + ": " + Arrays.asList(values));
-                System.out.println( values[0] );
-                System.out.println( values[1] );
-            }
-        });
     }
 }
